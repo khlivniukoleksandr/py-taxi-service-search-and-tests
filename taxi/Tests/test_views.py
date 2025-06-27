@@ -52,5 +52,3 @@ class DriverSearchTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "John")
         self.assertNotContains(response, "Alex_Black")
-
-
