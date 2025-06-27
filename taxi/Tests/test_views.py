@@ -13,8 +13,8 @@ class CarSearchTest(TestCase):
 
         manufacturer = Manufacturer.objects.create(name="Test Manufacturer")
         Car.objects.create(model="Toyota", manufacturer=manufacturer)
-        Car.objects.create(model="Kia",manufacturer=manufacturer)
-        Car.objects.create(model="Mercedes",manufacturer=manufacturer)
+        Car.objects.create(model="Kia", manufacturer=manufacturer)
+        Car.objects.create(model="Mercedes", manufacturer=manufacturer)
 
     def test_search(self):
         response = self.client.get(reverse("taxi:car-list") + "?model=Toy")
@@ -30,16 +30,25 @@ class DriverSearchTest(TestCase):
             username="testuser", password="Test1234"
         )
         self.client.login(username="testuser", password="Test1234")
-        Driver.objects.create(
-            username="John_Doe", password="test1234", license_number="XYZ12345",
-            first_name="John", last_name="Doe"
+        Driver.objects.create_user(
+            username="John_Doe",
+            password="test1234",
+            license_number="XYZ12345",
+            first_name="John",
+            last_name="Doe"
         )
-        Driver.objects.create(
-            username="Alex_Black", password="test1234", license_number="XYZ12545",
-            first_name="Alex", last_name="Black"
+
+        Driver.objects.create_user(
+            username="Alex_Black",
+            password="test1234",
+            license_number="XYZ12545",
+            first_name="Alex",
+            last_name="Black"
         )
+
     def test_search_by_username(self):
-        response = self.client.get(reverse("taxi:driver-list") + "?username=Joh")
+        response = self.client.get(reverse("taxi:driver-list")
+                                   + "?username=Joh")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "John")
         self.assertNotContains(response, "Alex_Black")
